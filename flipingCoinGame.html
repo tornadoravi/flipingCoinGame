@@ -30,6 +30,7 @@
         }
 
         function resultFixPlayer(flipingResults, players, fliping) {
+            resulof = []
             eachRoundResults = []
             let eachFlipingResults = []
             for (eachPlayer = 0; eachPlayer <= flipingResults.length - 1; eachPlayer++) {
@@ -72,12 +73,14 @@
                 playerPoints: player1results
             }
             eachRoundResults.push(roundResults1)
+            resulof.push(roundResults1)
 
             roundResults2 = {
                 playerName: players[1].playerName,
                 playerPoints: player2results
             }
             eachRoundResults.push(roundResults2)
+            resulof.push(roundResults2)
             if (nextround > 0) {
                 setTimeout(() => {
                     console.log(`round ${matchRound} winner announcement`)
@@ -102,6 +105,7 @@
 
                         console.table(eachFlipingResults)
                         console.table(eachRoundResults)
+
                         if (player1results > player2results) {
                             console.log(`playerName:${players[0].playerName}\nplayerPoints :${player1results}\nresult: WINNER`)
                         }
@@ -115,7 +119,7 @@
 
                         console.table(players)
                         console.log("********************************************************************************************************************************************************")
-                        resultFixPlayer(possibleFliping, playerList, nextround)
+                        resultFixPlayer(flipingProcess(totalFliping), playerList, nextround)
                     }, 13960)
 
                 }, 1000)
@@ -129,16 +133,19 @@
             function returnValues(blobStore) {
                 count = 0
                 for (element of blobStore) {
-                    if (count == 10){
+                    if (count == 10) {
                         blobSroage += "\r\n"
                         blobSroage += "matches,Player1name,flipingresult,player1points,Player2name,flipingresult,player2points"
                         blobSroage += "\r\n"
-                        count = 0}
+                        count = 0
+                    }
                     blobSroage += element.matches + "," + element.player1Name + "," + element.player1 + "," + element.player1Points + "," + element.player2Name + "," + element.player2 + "," + element.player2Points + ","
                     blobSroage += "\r\n"
-                    
+
                     count++
+
                 }
+
             }
             returnValues(blobStore)
             let tempBlop = new Blob([blobSroage], { type: 'text/csv' })
@@ -147,16 +154,10 @@
             activation.href = tempURL
 
             activation.download = 'flipingCoinGameResults.csv'
-
             activation.click()
             window.URL.revokeObjectURL(tempURL)
             activation.remove()
         }, 60000)
-
-
-
-
-
     </script>
 </body>
 
